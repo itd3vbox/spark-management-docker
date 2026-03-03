@@ -29,7 +29,6 @@ Use absolute paths. You can run pwd to get your current directory.
 
 Clone the following repository:
   - [spark-management-laravel](https://github.com/itd3vbox/spark-management-laravel)
-If you are using the frontend, also clone your Next.js repository.
 
 **Step 2 : Create Required Folders**
 
