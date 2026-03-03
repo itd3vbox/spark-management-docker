@@ -72,6 +72,7 @@ cd /var/www/spark-management-laravel/
 composer install
 php artisan clean:data
 php artisan migrate:fresh --seed
+php artisan storage:link
 ```
 
 1. Open Docker Desktop
