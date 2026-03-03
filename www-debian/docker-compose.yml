@@ -1,0 +1,76 @@
+# version: '3'
+
+services:
+
+  mariadb:
+    # image: sp-www-mariadb
+    container_name: sp-www-mariadb
+    build:
+      context: ./mariadb
+      args:
+        DB_NAME: ${DB_NAME}
+        DB_NAME_TEST: ${DB_NAME_TEST}
+        DB_USER: ${DB_USER}
+        DB_PASSWORD: ${DB_PASSWORD}
+        DB_USER_ADMIN: ${DB_USER_ADMIN}
+        DB_PASSWORD_ADMIN: ${DB_PASSWORD_ADMIN}
+        DB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    env_file: .env
+    restart: on-failure
+    volumes:
+      - db:/var/lib/mysql/:rw
+    networks:
+      - sp_www_net
+    ports:
+      - "3307:3306"
+      
+  nginx:
+    # image: sp-www-nginx
+    container_name: sp-www-nginx
+    build: ./nginx
+    ports:
+      - "80:80"
+      - "5173:5173"
+    volumes:
+      - ${SM_LARAVEL}:/var/www/spark-management-laravel:rw
+      - phpmyadmin:/var/www/html/phpmyadmin
+    networks:
+      - sp_www_net
+    restart: on-failure
+    env_file: .env
+    # depends_on:
+    #   - web
+
+  web:
+    # image: sp-www-web
+    container_name: sp-www-web
+    build: 
+      context: ./web
+    ports:
+      - "9000:9000"
+    volumes:
+      - ${SM_LARAVEL}:/var/www/spark-management-laravel
+      - ${SM_AUTOMATES}:/automates
+      - phpmyadmin:/var/www/html/phpmyadmin
+    networks:
+      - sp_www_net
+    restart: on-failure
+    env_file: .env
+
+volumes:
+  db:
+    driver: local
+    driver_opts:
+      device: ${SM_DB}
+      type: none
+      o: bind
+  phpmyadmin:
+    driver: local
+    driver_opts:
+      device: ${SM_SMA}
+      type: none
+      o: bind
+
+networks:
+  sp_www_net:
+    name: sp_www_net
