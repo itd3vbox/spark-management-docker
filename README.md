@@ -73,6 +73,7 @@ composer install
 php artisan clean:data
 php artisan migrate:fresh --seed
 php artisan storage:link
+php artisan reverb:start&
 ```
 
 1. Open Docker Desktop
