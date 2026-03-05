@@ -48,6 +48,7 @@ services:
       context: ./web
     ports:
       - "9000:9000"
+      - "8080:8080"
     volumes:
       - ${SM_LARAVEL}:/var/www/spark-management-laravel
       - ${SM_AUTOMATES}:/automates
